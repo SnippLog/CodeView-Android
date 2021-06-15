@@ -114,9 +114,9 @@ public class Prettify {
           + "instanceof,interface,null,native,package,strictfp,super,synchronized,"
           + "throws,transient";
   public static final String KOTLIN_KEYWORDS = JAVA_KEYWORDS + ","
-          + "as,as?,fun,in,!in,object,typealias,val,var,when,by,constructor,delegate,dynamic,field"
-          + "file,get,init,set,value,where,actual,annotation,companion,crossinline,data,enum,expect"
-          + "external,field,infix,inline,inner,internal,it,lateinit,noinline,open,operator,out,override,"
+          + "as,as?,fun,in,!in,is,!is,object,typealias,val,var,when,by,constructor,delegate,dynamic,field,"
+          + "file,get,init,set,value,where,actual,annotation,companion,crossinline,data,enum,expect,"
+          + "external,field,infix,inline,inner,internal,lateinit,noinline,open,operator,out,override,"
           + "reified,sealed,suspend,tailrec,vararg";
   public static final String RUST_KEYWORDS = FLOW_CONTROL_KEYWORDS + "," + "as,assert,const,copy,drop,"
           + "enum,extern,fail,false,fn,impl,let,log,loop,match,mod,move,mut,priv,"
@@ -146,9 +146,18 @@ public class Prettify {
           + "BEGIN,END";
   public static final String SH_KEYWORDS = FLOW_CONTROL_KEYWORDS + "," + "case,done,elif,esac,eval,fi,"
           + "function,in,local,set,then,until";
+  public static final String SWIFT_KEYWORDS = "associatedtype,async,await,class,deinit,enum,extension,fileprivate," +
+          "func,import,init,inout,internal,let,open,operator,private,protocol,public,rethrows,static," +
+          "struct,subscript,typealias,andvar,break,case,continue,default,defer,do,else,fallthrough," +
+          "for,guard,if,in,repeat,return,switch,where,while,as,Any,catch,false,is,nil,super,self,Self," +
+          "throw,throws,true,try,#available,#colorLiteral,#column,#else,#elseif,#endif,#error,#file," +
+          "#fileID,#fileLiteral,#filePath,#function,#if,#imageLiteral,#line,#selector,#sourceLocation," +
+          "#warning,associativity,convenience,dynamic,didSet,final,get,infix,indirect,lazy,left," +
+          "mutating,none,nonmutating,optional,override,postfix,precedence,prefix,Protocol,required," +
+          "right,set,Type,unowned,weak,willSet,var,_";
   public static final String ALL_KEYWORDS = CPP_KEYWORDS + "," + KOTLIN_KEYWORDS + "," + CSHARP_KEYWORDS
           + "," + JSCRIPT_KEYWORDS + "," + PERL_KEYWORDS + "," + PYTHON_KEYWORDS + "," + RUBY_KEYWORDS
-          + "," + SH_KEYWORDS;
+          + "," + SH_KEYWORDS + SWIFT_KEYWORDS;
   public static final Pattern C_TYPES = Pattern.compile("^(DIR|FILE|vector|(de|priority_)?queue|list|stack|(const_)?iterator|(multi)?(set|map)|bitset|u?(int|float)\\d*)\\b");
   // token style names.  correspond to css classes
   /**
@@ -304,6 +313,9 @@ public class Prettify {
       decorateSourceMap = new HashMap<String, Object>();
       decorateSourceMap.put("keywords", KOTLIN_KEYWORDS);
       decorateSourceMap.put("cStyleComments", true);
+      decorateSourceMap.put("multiLineStrings", true);
+      decorateSourceMap.put("tripleQuotedStrings", true);
+      decorateSourceMap.put("regexLiterals", true);
       registerLangHandler(sourceDecorator(decorateSourceMap), Arrays.asList(new String[]{"kt"}));
 
       decorateSourceMap = new HashMap<String, Object>();
@@ -353,6 +365,14 @@ public class Prettify {
       decorateSourceMap.put("cStyleComments", true);
       decorateSourceMap.put("multilineStrings", true);
       registerLangHandler(sourceDecorator(decorateSourceMap), Arrays.asList(new String[]{"rc", "rs", "rust"}));
+
+      decorateSourceMap = new HashMap<String, Object>();
+      decorateSourceMap.put("keywords", SWIFT_KEYWORDS);
+      decorateSourceMap.put("cStyleComments", true);
+      decorateSourceMap.put("multiLineStrings", true);
+      decorateSourceMap.put("tripleQuotedStrings", true);
+      decorateSourceMap.put("regexLiterals", true);
+      registerLangHandler(sourceDecorator(decorateSourceMap), Arrays.asList(new String[]{"swift"}));
 
       shortcutStylePatterns = new ArrayList<List<Object>>();
       fallthroughStylePatterns = new ArrayList<List<Object>>();
